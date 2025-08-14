@@ -34,6 +34,8 @@ ALLOWED_HOSTS = [
     'dressrosa-2lbv.onrender.com'
 ]
 
+ALLOWED_HOSTS = ["dressrosa-2lbv.onrender.com", "127.0.0.1", "localhost"]
+
 
 # -----------------------------
 # APPLICATION DEFINITION
