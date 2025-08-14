@@ -28,13 +28,7 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 # Set allowed hosts from environment (Render will require its domain here)
 # Multiple hosts should be space-separated in the env var
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'dressrosa-2lbv.onrender.com'
-]
-
-ALLOWED_HOSTS = ["dressrosa-2lbv.onrender.com", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost").split(",")
 
 
 # -----------------------------
