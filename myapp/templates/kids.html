@@ -1,0 +1,202 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Kids{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/men.css' %}">
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .card:hover .card-title {
+        color: #007bff !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<!-- Main Section -->
+<section class="bg-dark text-light" id="home">
+  <div class="container py-5">
+    <div class="row align-items-center">
+
+      <!-- Left Text -->
+      <div class="col-md-6 text-center text-md-start">
+        <h1 class="display-4 fw-bold mb-3">
+          Design with <br> us
+        </h1>
+        <p class="lead text-secondary">
+          The new clothing collection<br>
+          from the best brands of the year.
+        </p>
+        <a href="#new" class="btn btn-outline-light btn-lg mt-3">
+          Explore <i class="ri-arrow-right-line"></i>
+        </a>
+      </div>
+
+      <!-- Right Images -->
+      <div class="col-md-6 text-center hero-images mt-4 mt-md-0">
+        <img src="{% static 'img/kids/kid2.png' %}" alt="main" class="img-fluid">
+        <img src="{% static 'img/kids/kid11.jpg' %}" alt="overlay" class="img-fluid">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!--main 2-->
+
+<section>
+  <h2 class="text-center mt-5 mb-2">TOP 12 PICKS OF THE WEEK</h2>
+
+<div class="carousel-wrapper">
+  <button class="carousel-btn left" id="prevBtn">&#10094;</button>
+
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid1.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid2.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid3.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid4.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid5.jpg' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid6.jpg' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid7.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/kids/kid8.jpeg' %}"></div>
+
+        </div>
+  </div>
+
+  <button class="carousel-btn right" id="nextBtn">&#10095;</button>
+</div>
+</section>
+
+<!--main 3-->
+<section class="py-5" id="new">
+    <div class="container">
+        <h2 class="text-center mb-5">Create Your Own Kids Fashion</h2>
+
+        <div class="row justify-content-center g-4">
+            <div class="container">
+                {% for row in rows %}
+                <div class="row mb-4 justify-content-center">
+                    {% for product in row %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <a href="{% url 'product_page' product.pid %}" class="text-decoration-none">
+                            <div class="card" style="max-width: 500px; margin: auto; height: 480px; cursor: pointer; transition: transform 0.2s;">
+                                <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.product_title }}"
+                                    style="height: 350px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-dark">{{ product.product_title }}</h5>
+                                    <p class="card-text fw-bold text-primary">₹{{ product.product_price }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+  </div>
+</section>
+
+
+
+
+<!--brands-->
+<section class="brand section py-5 bg-light bg-dark my-5">
+  <div class="container text-center">
+    <h2 class="section__title mb-4">Suggested Brands</h2>
+    <div class="row justify-content-center gy-4 gx-5 my-5">
+      <div class="col-auto">
+        <img src="{% static 'img/foot/nike.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/rebok.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/puma.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/Adidas.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="bg-black text-light pt-5 pb-3 mt-5">
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- Logo & About -->
+            <div class="col-md-4 text-center">
+                <a href="/">
+                    <img src="{% static 'img/logo.png' %}" alt="Logo" style="max-height: 50px;">
+                </a>
+                <p class="mt-3 small text-muted">
+                    Your one-stop shop for Men, Women, and Kids fashion. Quality and style at the best prices.
+                </p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-md-2 col-6">
+                <h6 class="fw-bold">Quick Links</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/men/" class="text-decoration-none text-light">Men</a></li>
+                    <li><a href="/women/" class="text-decoration-none text-light">Women</a></li>
+                    <li><a href="/kids/" class="text-decoration-none text-light">Kids</a></li>
+                    <li><a href="/contact/" class="text-decoration-none text-light">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div class="col-md-3 col-6">
+                <h6 class="fw-bold">Customer Service</h6>
+                <ul class="list-unstyled">
+                    <li><a href="/faq/" class="text-decoration-none text-light">FAQ</a></li>
+                    <li><a href="/shipping/" class="text-decoration-none text-light">Shipping</a></li>
+                    <li><a href="/returns/" class="text-decoration-none text-light">Returns</a></li>
+                    <li><a href="/support/" class="text-decoration-none text-light">Support</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media -->
+            <div class="col-md-3">
+                <h6 class="fw-bold">Follow Us</h6>
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-light fs-5"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-light fs-5"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <hr class="border-secondary mt-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="small mb-0">&copy; 2025 Your Store. All rights reserved.</p>
+            <div class="small">
+                <a href="/privacy/" class="text-light text-decoration-none me-3">Privacy Policy</a>
+                <a href="/terms/" class="text-light text-decoration-none">Terms & Conditions</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+{% endblock %}

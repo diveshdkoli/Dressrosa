@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body class="bg-dark">
+
+    <!-- Logo top-left -->
+    <div style="position: absolute; top: 20px; left: 30px; z-index: 10;">
+        <a href="/"><img src="{% static 'img/logo.png' %}" alt="Logo" style="height: 70px" /></a>
+    </div>
+
+    <!-- Full viewport container with background -->
+    <div class="container-fluid d-flex justify-content-center align-items-center vh-100">
+        <!-- Form box -->
+        <div class="bg-white rounded p-5 shadow" style="max-width: 700px; width: 100%;">
+            <h1 class="mb-4 text-center">Register Now</h1>
+            <form method="get" action="{% url 'reg' %}">
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-semibold">Username</label>
+                    <input type="text"  class="form-control border border-3 shadow p-2 mb-3 bg-body-tertiary rounded" id="username" name="uname"
+                        placeholder="Enter username" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email address</label>
+                    <input type="email" class="form-control border border-3 shadow p-2 mb-3 bg-body-tertiary rounded" id="email" name="email"
+                           placeholder="Enter your email"
+                        aria-describedby="emailHelp" required />
+                    <div id="emailHelp" class="form-text">
+                        We'll never share your email with anyone else.
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <input type="password" class="form-control border border-3 shadow p-2 mb-3 bg-body-tertiary rounded" id="password" name="password"
+                        placeholder="Enter password" required />
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                    <input type="password" class="form-control border border-3 shadow p-2 mb-3 bg-body-tertiary rounded" id="confirmpassword" name="confirmpassword"
+                        placeholder="Confirm your password" required />
+                </div>
+
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input border border-4" id="termsCheck" required />
+                    <label class="form-check-label" for="termsCheck">I agree to the terms and conditions</label>
+                </div>
+                {% if msg %}
+                <div class="alert alert-danger py-2">{{ msg }}</div>
+                {% endif %}
+                <button type="submit" class="btn btn-primary w-100 fw-semibold">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+        crossorigin="anonymous"></script>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+      const pass = document.getElementById('password').value;
+      const confirmPass = document.getElementById('confirmpassword').value;
+      if (pass !== confirmPass) {
+        e.preventDefault();
+        alert('Passwords do not match!');
+      }
+    });
+</script>
+
+</body>
+
+</html>

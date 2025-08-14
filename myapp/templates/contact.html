@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .contact-section {
+            padding: 50px 0;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        iframe {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Contact Section -->
+<section class="contact-section bg-dark">
+  <div style="position: absolute; top: 20px; left: 30px; z-index: 10;">
+        <a href="/"><img src="{% static 'img/logo.png' %}" alt="Logo" style="height: 60px" /></a>
+    </div>
+<div class="container bg-light rounded" style="margin-top: 60px;">
+        <h1 class="text-center mb-4">Contact Us</h1>
+        <p class="text-center mb-5">We’d love to hear from you! Fill out the form below or reach us directly.</p>
+
+        <div class="row">
+            <!-- Contact Form -->
+            <div class="col-lg-6 mb-4">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <input type="text" class="form-control" placeholder="Your Name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" placeholder="Your Email" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Subject</label>
+                        <input type="text" class="form-control" placeholder="Subject">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Message</label>
+                        <textarea class="form-control" rows="5" placeholder="Write your message here..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                </form>
+            </div>
+
+            <!-- Contact Info + Map -->
+            <div class="col-lg-6">
+                <div class="contact-info mb-4">
+                    <h4>Our Office</h4>
+                    <p><strong>Address:</strong> 123 Main Street, Mumbai, India</p>
+                    <p><strong>Phone:</strong> <a href="tel:+911234567890">+91 12345 67890</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:info@example.com">info@example.com</a></p>
+                    <p><strong>Hours:</strong> Mon–Fri, 9AM–6PM</p>
+                </div>
+
+                <div class="mb-4">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d241317.11609833276!2d72.7410971716263!3d19.08219783855378!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b63c33f0f1af%3A0x2a4d064bb7a4b5d5!2sMumbai%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1684401700000!5m2!1sen!2sin"
+                        width="100%" height="250" allowfullscreen="" loading="lazy">
+                    </iframe>
+                </div>
+
+                <div>
+                    <h5>Follow Us</h5>
+                    <a href="#" class="me-2">Facebook</a>
+                    <a href="#" class="me-2">Instagram</a>
+                    <a href="#">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,219 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}My Profile - DressRosa{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-5 bg-light">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+                <li class="breadcrumb-item active">My Profile</li>
+            </ol>
+        </nav>
+
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="position-relative mb-3">
+                            <img src="{% static 'img/default-avatar.png' %}"
+                                 alt="Profile Picture"
+                                 class="rounded-circle mb-3 border"
+                                 width="150" height="150">
+                            <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle p-2">
+                                <i class="fas fa-camera text-white"></i>
+                            </div>
+                        </div>
+                        <h4 class="mb-1">{{ user.get_full_name|default:user.username }}</h4>
+                        <p class="text-muted mb-3">{{ user.email }}</p>
+                        <div class="d-grid gap-2">
+                            <a href="#account-info" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-user me-2"></i>Account Details
+                            </a>
+                            <a href="#order-history" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-shopping-bag me-2"></i>My Orders
+                            </a>
+                            <a href="{% url 'cart_page' %}" class="btn btn-outline-dark btn-sm position-relative">
+                                <i class="fas fa-shopping-cart me-2"></i>My Cart
+                                {% if cart_count > 0 %}
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {{ cart_count }}
+                                </span>
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Profile Content -->
+            <div class="col-lg-9">
+                <!-- Welcome Banner -->
+                <div class="alert alert-primary mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-user-circle fa-3x text-primary me-3"></i>
+                        </div>
+                        <div>
+                            <h5 class="alert-heading mb-1">Welcome back, {{ user.first_name|default:user.username }}!</h5>
+                            <p class="mb-0">You can manage your account details and view your order history here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Account Info -->
+                <div id="account-info" class="card shadow-sm mb-4">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <h5 class="mb-0"><i class="fas fa-user-circle me-2 text-primary"></i>Account Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <h6 class="text-muted mb-2">Personal Information</h6>
+                                <p class="mb-1"><strong>Name:</strong> {{ user.get_full_name|default:"Not set" }}</p>
+                                <p class="mb-1"><strong>Username:</strong> {{ user.username }}</p>
+                                <p class="mb-1"><strong>Email:</strong> {{ user.email }}</p>
+                                <p class="mb-0"><strong>Member since:</strong> {{ user.date_joined|date:"F Y" }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-muted mb-2">Account Actions</h6>
+                                <div class="d-grid gap-2">
+                                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">
+                                        <i class="fas fa-key me-2"></i>Change Password
+                                    </a>
+                                    <a href="#" class="btn btn-outline-secondary btn-sm text-start">
+                                        <i class="fas fa-map-marker-alt me-2"></i>Manage Addresses
+                                    </a>
+                                    <a href="{% url 'logout_user' %}" class="btn btn-outline-danger btn-sm text-start">
+                                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order History -->
+                <div id="order-history" class="card shadow-sm">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <h5 class="mb-0"><i class="fas fa-shopping-bag me-2 text-primary"></i>Recent Orders</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if orders %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Date</th>
+                                            <th>Status</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for order in orders %}
+                                        <tr>
+                                            <td>{{ order.id }}</td>
+                                            <td>{{ order.date }}</td>
+                                            <td>
+                                                <span class="badge
+                                                    {% if order.status == 'Delivered' %} bg-success
+                                                    {% elif order.status == 'Pending' %} bg-warning
+                                                    {% else %} bg-secondary
+                                                    {% endif %}">
+                                                    {{ order.status }}
+                                                </span>
+                                            </td>
+                                            <td>₹{{ order.total_price }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">You have no orders yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--brands-->
+<section class="brand section py-5 bg-light bg-dark my-5">
+  <div class="container text-center">
+    <h2 class="section__title mb-4">Suggested Brands</h2>
+    <div class="row justify-content-center gy-4 gx-5 my-5">
+      <div class="col-auto">
+        <img src="{% static 'img/foot/nike.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/rebok.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/puma.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/Adidas.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- footer -->
+<footer class="site-footer w-100 bg-dark text-white">
+  <div class="container-fluid py-5">
+    <div class="row px-5">
+
+      <div class="col-md-3">
+        <h5>UrbanFit.</h5>
+        <p>Dress up with the best that <br> brands have to offer.</p>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Shop</a></li>
+          <li><a href="#" class="text-white">Categories</a></li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Blog</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Events</a></li>
+          <li><a href="#" class="text-white">Popular News</a></li>
+          <li><a href="#" class="text-white">Latest News</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Office</h6>
+        <p>Monday - Saturday<br>9 AM - 10 PM</p>
+      </div>
+
+      <div class="col-md-3">
+        <h6>Follow Us</h6>
+        <a href="#" class="text-white"><i class="bi bi-facebook me-2"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-instagram me-2"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter me-2"></i></a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center py-3 bg-dark border-top border-secondary">
+    © 2025 UrbanFit. All rights reserved.
+  </div>
+</footer>
+
+
+{% endblock %}

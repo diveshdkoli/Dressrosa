@@ -1,0 +1,191 @@
+{% extends 'master.html' %}
+{% load static %}
+
+{% block title %}Women{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/men.css' %}">
+<style>
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .card {
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .card:hover .card-title {
+        color: #007bff !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+
+<!-- Main Section -->
+<section class="bg-dark text-light" id="home">
+  <div class="container py-5">
+    <div class="row align-items-center">
+
+      <!-- Left Text -->
+      <div class="col-md-6 text-center text-md-start">
+        <h1 class="display-4 fw-bold mb-3">
+          Design with <br> us
+        </h1>
+        <p class="lead text-secondary">
+          The new clothing collection<br>
+          from the best brands of the year.
+        </p>
+        <a href="#new" class="btn btn-outline-light btn-lg mt-3">
+          Explore <i class="ri-arrow-right-line"></i>
+        </a>
+      </div>
+
+      <!-- Right Images -->
+      <div class="col-md-6 text-center hero-images mt-4 mt-md-0">
+        <img src="{% static 'img/women/women35.png' %}" alt="main" class="img-fluid">
+        <img src="{% static 'img/women/women10.png' %}" alt="overlay" class="img-fluid">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!--main 2-->
+
+<section>
+  <h2 class="text-center mt-5 mb-2">TOP 12 PICKS OF THE WEEK</h2>
+
+<div class="carousel-wrapper">
+  <button class="carousel-btn left" id="prevBtn">&#10094;</button>
+
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women36.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women2.jpg' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women3.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women4.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women67.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women34.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women45.png' %}"></div>
+      <div class="carousel-item-custom"><img src="{% static 'img/women/women39.png' %}"></div>
+
+
+
+        </div>
+  </div>
+
+  <button class="carousel-btn right" id="nextBtn">&#10095;</button>
+</div>
+</section>
+
+<!--main 3-->
+<section class="py-5" id="new">
+    <div class="container">
+        <h2 class="text-center mb-5">Create Your Own Women Fashion</h2>
+
+        <div class="row justify-content-center g-4">
+            <div class="container">
+                {% for row in rows %}
+                <div class="row mb-4 justify-content-center">
+                    {% for product in row %}
+                    <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                        <a href="{% url 'product_page' product.pid %}" class="text-decoration-none">
+                            <div class="card" style="max-width: 500px; margin: auto; height: 480px; cursor: pointer; transition: transform 0.2s;">
+                                <img src="{{ product.product_image.url }}" class="card-img-top" alt="{{ product.product_title }}"
+                                    style="height: 350px; object-fit: cover;">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title text-dark">{{ product.product_title }}</h5>
+                                    <p class="card-text fw-bold text-primary">₹{{ product.product_price }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!--brands-->
+<section class="brand section py-5 bg-light bg-dark my-5">
+  <div class="container text-center">
+    <h2 class="section__title mb-4">Suggested Brands</h2>
+    <div class="row justify-content-center gy-4 gx-5 my-5">
+      <div class="col-auto">
+        <img src="{% static 'img/foot/nike.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/rebok.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/puma.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+      <div class="col-auto">
+        <img src="{% static 'img/foot/Adidas.png' %}" alt="logo" class="img-fluid brand__img " />
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- footer -->
+<footer class="site-footer w-100 bg-dark text-white">
+  <div class="container-fluid py-5">
+    <div class="row px-5">
+
+      <div class="col-md-3">
+        <h5>UrbanFit.</h5>
+        <p>Dress up with the best that <br> brands have to offer.</p>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Company</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Shop</a></li>
+          <li><a href="#" class="text-white">Categories</a></li>
+          <li><a href="#" class="text-white">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Blog</h6>
+        <ul class="list-unstyled">
+          <li><a href="#" class="text-white">Events</a></li>
+          <li><a href="#" class="text-white">Popular News</a></li>
+          <li><a href="#" class="text-white">Latest News</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-2">
+        <h6>Office</h6>
+        <p>Monday - Saturday<br>9 AM - 10 PM</p>
+      </div>
+
+      <div class="col-md-3">
+        <h6>Follow Us</h6>
+        <a href="#" class="text-white"><i class="bi bi-facebook me-2"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-instagram me-2"></i></a>
+        <a href="#" class="text-white"><i class="bi bi-twitter me-2"></i></a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="text-center py-3 bg-dark border-top border-secondary">
+    © 2025 UrbanFit. All rights reserved.
+  </div>
+</footer>
+
+
+
+{% endblock %}
