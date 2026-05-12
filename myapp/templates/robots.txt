@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dressrosa-1-xm5p.onrender.com/sitemap.xml
