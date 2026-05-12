@@ -5,125 +5,204 @@
 
 {% block body %}
 <div class="container py-5">
-    <div class="row">
+    <div class="row g-4">
+
+        <!-- LEFT: Shipping + Payment -->
         <div class="col-lg-8">
-            <h2 class="mb-4">Checkout</h2>
-            
+            <h2 class="mb-4 text-white">Checkout</h2>
+
             <!-- Shipping Information -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">Shipping Information</h5>
+            <div class="card shadow-sm mb-4 bg-secondary text-white">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0"><i class="fa-solid fa-truck me-2"></i>Shipping Information</h5>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form method="post" action="{% url 'checkout' %}" id="checkoutForm">
+                        {% csrf_token %}
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label for="firstName" class="form-label">First name</label>
-                                <input type="text" class="form-control" id="firstName" required>
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="first_name" placeholder="John" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="lastName" class="form-label">Last name</label>
-                                <input type="text" class="form-control" id="lastName" required>
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="last_name" placeholder="Doe" required>
                             </div>
                             <div class="col-12">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control bg-dark text-white border-secondary"
+                                    name="email" value="{{ request.user.email }}" required>
                             </div>
                             <div class="col-12">
-                                <label for="address2" class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
-                                <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
+                                <label class="form-label">Address</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="address" placeholder="1234 Main St" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Address 2 <span class="text-muted">(Optional)</span></label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="address2" placeholder="Apartment or suite">
                             </div>
                             <div class="col-md-5">
-                                <label for="country" class="form-label">Country</label>
-                                <select class="form-select" id="country" required>
+                                <label class="form-label">Country</label>
+                                <select class="form-select bg-dark text-white border-secondary" name="country" required>
                                     <option value="">Choose...</option>
-                                    <option>India</option>
+                                    <option value="India" selected>India</option>
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="state" class="form-label">State</label>
-                                <select class="form-select" id="state" required>
-                                    <option value="">Choose...</option>
-                                    <option>Maharashtra</option>
-                                </select>
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="state" placeholder="Maharashtra" required>
                             </div>
                             <div class="col-md-3">
-                                <label for="zip" class="form-label">Zip</label>
-                                <input type="text" class="form-control" id="zip" required>
+                                <label class="form-label">ZIP / Pincode</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="zip" placeholder="400001" required>
+                            </div>
+                        </div>
+
+                        <!-- Payment Information -->
+                        <hr class="my-4 border-secondary">
+                        <h5 class="mb-3"><i class="fa-solid fa-credit-card me-2"></i>Payment</h5>
+
+                        <div class="d-flex gap-4 mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                    id="credit" value="credit" checked>
+                                <label class="form-check-label" for="credit">Credit Card</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                    id="debit" value="debit">
+                                <label class="form-check-label" for="debit">Debit Card</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="paymentMethod"
+                                    id="paypal" value="paypal">
+                                <label class="form-check-label" for="paypal">PayPal</label>
+                            </div>
+                        </div>
+
+                        <div class="row g-3" id="cardFields">
+                            <div class="col-md-12">
+                                <label class="form-label">Name on Card</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="cc_name" placeholder="John Doe" required>
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Card Number</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="cc_number" placeholder="xxxx xxxx xxxx xxxx"
+                                    maxlength="19" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Expiration (MM/YY)</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="cc_expiration" placeholder="MM/YY" maxlength="5" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">CVV</label>
+                                <input type="text" class="form-control bg-dark text-white border-secondary"
+                                    name="cc_cvv" placeholder="123" maxlength="4" required>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-
-            <!-- Payment Information -->
-            <div class="card shadow-sm mb-4">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">Payment</h5>
-                </div>
-                <div class="card-body">
-                    <div class="form-check">
-                        <input id="credit" name="paymentMethod" type="radio" class="form-check-input" checked required>
-                        <label class="form-check-label" for="credit">Credit card</label>
-                    </div>
-                    <div class="form-check">
-                        <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="debit">Debit card</label>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                        <label class="form-check-label" for="paypal">PayPal</label>
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-12">
-                            <label for="cc-name" class="form-label">Name on card</label>
-                            <input type="text" class="form-control" id="cc-name" placeholder="" required>
-                            <small class="text-muted">Full name as displayed on card</small>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="cc-number" class="form-label">Credit card number</label>
-                            <input type="text" class="form-control" id="cc-number" placeholder="" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="cc-expiration" class="form-label">Expiration</label>
-                            <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="cc-cvv" class="form-label">CVV</label>
-                            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
+        <!-- RIGHT: Order Summary -->
         <div class="col-lg-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-light">
-                    <h5 class="mb-0">Order Summary</h5>
+            <div class="card shadow-sm bg-secondary text-white sticky-top" style="top: 80px;">
+                <div class="card-header bg-dark">
+                    <h5 class="mb-0"><i class="fa-solid fa-bag-shopping me-2"></i>Order Summary
+                        <span class="badge bg-danger ms-2">{{ total_items }} item{{ total_items|pluralize }}</span>
+                    </h5>
                 </div>
                 <div class="card-body">
+
+                    <!-- Cart Items List -->
+                    {% for item in cart_items %}
+                    <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom border-dark">
+                        <div class="d-flex align-items-center gap-2">
+                            {% if item.product.product_image %}
+                            <img src="{{ item.product.product_image.url }}" alt="{{ item.product.product_title }}"
+                                style="width:45px; height:45px; object-fit:cover; border-radius:6px;">
+                            {% endif %}
+                            <div>
+                                <small class="fw-semibold d-block">{{ item.product.product_title }}</small>
+                                <small class="text-muted">Qty: {{ item.quantity }}</small>
+                            </div>
+                        </div>
+                        <span class="fw-semibold">₹{{ item.total_price }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted text-center">No items in cart.</p>
+                    {% endfor %}
+
+                    <hr class="border-dark">
+
+                    <!-- Totals -->
                     <div class="d-flex justify-content-between mb-2">
                         <span>Subtotal</span>
                         <span>₹{{ total_amount }}</span>
                     </div>
                     <div class="d-flex justify-content-between mb-2">
                         <span>Shipping</span>
-                        <span class="text-success">Free</span>
+                        <span class="text-success fw-semibold">Free</span>
                     </div>
                     <div class="d-flex justify-content-between mb-3">
                         <span>Tax</span>
                         <span>₹0.00</span>
                     </div>
-                    <hr>
+                    <hr class="border-dark">
                     <div class="d-flex justify-content-between mb-4">
-                        <h5>Total</h5>
-                        <h5>₹{{ total_amount }}</h5>
+                        <h5 class="mb-0">Total</h5>
+                        <h5 class="mb-0 text-warning">₹{{ total_amount }}</h5>
                     </div>
-                    <button type="submit" class="btn btn-dark w-100 py-2">Place Order</button>
+
+                    <button type="submit" form="checkoutForm" class="btn btn-warning w-100 py-2 fw-bold">
+                        <i class="fa-solid fa-lock me-2"></i>Place Order
+                    </button>
+                    <a href="{% url 'cart_page' %}" class="btn btn-outline-light w-100 mt-2">
+                        <i class="fa-solid fa-arrow-left me-2"></i>Back to Cart
+                    </a>
                 </div>
             </div>
         </div>
+
     </div>
 </div>
+
+<script>
+    // Format card number with spaces
+    document.querySelector('[name="cc_number"]').addEventListener('input', function (e) {
+        let val = e.target.value.replace(/\D/g, '').substring(0, 16);
+        e.target.value = val.replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    // Format expiry MM/YY
+    document.querySelector('[name="cc_expiration"]').addEventListener('input', function (e) {
+        let val = e.target.value.replace(/\D/g, '').substring(0, 4);
+        if (val.length >= 3) val = val.substring(0, 2) + '/' + val.substring(2);
+        e.target.value = val;
+    });
+
+    // Toggle card fields if PayPal selected
+    document.querySelectorAll('[name="paymentMethod"]').forEach(radio => {
+        radio.addEventListener('change', function () {
+            const cardFields = document.getElementById('cardFields');
+            if (this.value === 'paypal') {
+                cardFields.style.opacity = '0.4';
+                cardFields.querySelectorAll('input').forEach(i => i.removeAttribute('required'));
+            } else {
+                cardFields.style.opacity = '1';
+                cardFields.querySelectorAll('input').forEach(i => i.setAttribute('required', 'required'));
+            }
+        });
+    });
+</script>
 {% endblock %}

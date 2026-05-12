@@ -17,32 +17,32 @@ def register(request):
 
 
 def reg(request):
-    uname = request.GET.get("uname")
-    email = request.GET.get("email")
-    password = request.GET.get("password")
-    confirmpassword = request.GET.get("confirmpassword")
+    if request.method != 'POST':
+        return redirect('register')
 
-    if uname and email and password and confirmpassword:
+    uname = request.POST.get("uname", "").strip()
+    email = request.POST.get("email", "").strip()
+    password = request.POST.get("password", "")
+    confirmpassword = request.POST.get("confirmpassword", "")
 
-        # Check if username already exists
-        if User.objects.filter(username=uname).exists():
-            param = {'msg': "Username already taken"}
-            return render(request, 'register.html', param)
+    if not (uname and email and password and confirmpassword):
+        return render(request, 'register.html', {'msg': "Please fill in all fields"})
 
-        # Check if email already exists (optional)
-        # if User.objects.filter(email=email).exists():
-        #     param = {'msg': "Email already registered"}
-        #     return render(request, 'register.html', param)
+    if password != confirmpassword:
+        return render(request, 'register.html', {'msg': "Passwords do not match"})
 
-        # Create new user
-        user = User.objects.create_user(username=uname, email=email, password=password)
-        user.save()
-        param = {'msg': "User added successfully"}
-        return render(request, 'register.html', param)
+    if len(password) < 6:
+        return render(request, 'register.html', {'msg': "Password must be at least 6 characters"})
 
-    else:
-        param = {'msg': "Please fill full form"}
-        return render(request, 'register.html', param)
+    if User.objects.filter(username=uname).exists():
+        return render(request, 'register.html', {'msg': "Username already taken"})
+
+    if User.objects.filter(email=email).exists():
+        return render(request, 'register.html', {'msg': "Email already registered"})
+
+    user = User.objects.create_user(username=uname, email=email, password=password)
+    user.save()
+    return render(request, 'register.html', {'msg': "User added successfully! You can now login."})
 
 
 # login
@@ -51,17 +51,21 @@ def login_page(request):
 
 
 def login_data(request):
-    uname = request.GET.get("uname")
-    password = request.GET.get("password")
+    if request.method != 'POST':
+        return redirect('login_page')
+
+    uname = request.POST.get("uname", "").strip()
+    password = request.POST.get("password", "")
+
+    if not (uname and password):
+        return render(request, 'login_page.html', {'msg': "Please enter username and password"})
 
     user = authenticate(username=uname, password=password)
     if user is not None:
         login(request, user)
-        return render(request, 'index.html')
-
+        return redirect('index')
     else:
-        param = {'msg': "Wrong username and password"}
-        return render(request, 'login_page.html', param)
+        return render(request, 'login_page.html', {'msg': "Wrong username or password"})
 
 
 def logout_user(request):
@@ -202,7 +206,7 @@ def product_list(request):
     if current_row:
         rows.append(current_row)
 
-    return render(request, 'store/product_list.html', {'rows': rows})
+    return render(request, 'men.html', {'rows': rows, 'products': products})
 
 
 # product_page
@@ -216,11 +220,11 @@ def product_page(request, pid):
 
 # product detail
 def product_detail(request, pid):
-    product = get_object_or_404(product, pid=pid)
+    product_obj = get_object_or_404(product, pid=pid)
     context = {
-        'product': product
+        'product': product_obj
     }
-    return render(request, 'store/product_detail.html', context)
+    return render(request, 'product_page.html', context)
 
 
 # Cart functionality
@@ -329,9 +333,30 @@ def checkout(request):
         messages.warning(request, 'Please sign in to proceed to checkout.')
         return redirect('login_page')
 
-    # For now, just show a simple checkout page
-    # In a real application, you would implement payment processing here
-    return render(request, 'checkout.html')
+    # Fetch cart items and compute totals for the logged-in user
+    cart_items = Cart.objects.filter(user=request.user)
+    cart_data = []
+    total_amount = 0
+
+    for item in cart_items:
+        item_total = item.product.product_price * item.quantity
+        cart_data.append({
+            'product': item.product,
+            'quantity': item.quantity,
+            'total_price': item_total,
+        })
+        total_amount += item_total
+
+    if not cart_data:
+        messages.warning(request, 'Your cart is empty.')
+        return redirect('cart_page')
+
+    context = {
+        'cart_items': cart_data,
+        'total_amount': total_amount,
+        'total_items': len(cart_data),
+    }
+    return render(request, 'checkout.html', context)
 
 # forget_pass
 def forget_pass(request):
